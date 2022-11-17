@@ -53,9 +53,10 @@ class AvailableBooksViewModel @Inject constructor(
                             }
                         }
                     }
-                    onError.let {
-                        Log.d("FRANK_TAG", "getAvailableBooks: $it")
+                    onError.let { error ->
+                        Log.d("TAG_BOOKS", "Error get availables book: $error")
                     }
-                })
+                }
+        )
     }
 }
