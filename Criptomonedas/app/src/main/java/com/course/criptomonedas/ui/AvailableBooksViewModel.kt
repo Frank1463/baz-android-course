@@ -6,15 +6,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.course.criptomonedas.data.db.dao.BooksDao
 import com.course.criptomonedas.data.db.model.BooksEntity
+import com.course.criptomonedas.data.models.ResponseBooks
+import com.course.criptomonedas.domain.FilterCurrenciesUseCase
 import com.course.criptomonedas.domain.GetAvailableBooksCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AvailableBooksViewModel @Inject constructor(
     private val useCaseGetAvailableBooksCase: GetAvailableBooksCase,
+    private val filterCurrenciesUseCase: FilterCurrenciesUseCase,
     private val dao: BooksDao
 ) : ViewModel() {
 
@@ -22,19 +30,32 @@ class AvailableBooksViewModel @Inject constructor(
     val availableBooks = _available_books
 
     fun getAvailableBooks() = viewModelScope.launch(Dispatchers.IO) {
-        try {
-            val result = useCaseGetAvailableBooksCase()
-            val entities = result.map { currency ->
-                BooksEntity(
-                    name = currency.book,
-                    id = currency.book
-                )
-            }
-            dao.insertBook(books = entities)
-            val localData = dao.getBooks()
-            _available_books.postValue(localData)
-        } catch (e: Exception) {
-            Log.d("TAG_FRANK", "getAvailableBooks: Error")
-        }
+        val compositeDisposable = CompositeDisposable()
+        compositeDisposable.add(
+            useCaseGetAvailableBooksCase().observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe { onSucces: ResponseBooks?, onError: Throwable? ->
+                    onSucces.let { lista ->
+                        filterCurrenciesUseCase.invoke(
+                            lista?.payload ?: emptyList()
+                        ) { listFiltered ->
+                            val entities = listFiltered.map { currency ->
+                                BooksEntity(
+                                    name = currency.book,
+                                    id = currency.book
+                                )
+                            }
+
+                            CoroutineScope(IO).launch {
+                                dao.insertBook(books = entities)
+                                val localData = dao.getBooks()
+                                _available_books.postValue(localData)
+                            }
+                        }
+                    }
+                    onError.let {
+                        Log.d("FRANK_TAG", "getAvailableBooks: $it")
+                    }
+                })
     }
 }

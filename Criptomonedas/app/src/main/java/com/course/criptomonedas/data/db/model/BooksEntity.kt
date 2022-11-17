@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "currency"
 )
-data class BooksEntity(
+data class  BooksEntity(
     @ColumnInfo(name = "name") var name: String,
     @PrimaryKey() var id: String
 )

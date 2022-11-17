@@ -1,5 +1,6 @@
 package com.course.criptomonedas.data.models
 
-data class AvailableBooks(
+data class ResponseBooks(
     val payload: List<ModelBook>,
+    val success: Boolean
 )
