@@ -4,5 +4,5 @@ import com.course.criptomonedas.data.models.ModelDetails
 
 interface DetailBooksRepository {
 
-    suspend fun getDetailBooks(id:String): ModelDetails
+    suspend fun getDetailBooks(id: String): ModelDetails
 }

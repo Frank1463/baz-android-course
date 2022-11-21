@@ -1,8 +1,8 @@
 package com.course.criptomonedas.data.network
 
-import com.course.criptomonedas.data.models.ResponseBooks
 import com.course.criptomonedas.data.models.ModelDetails
 import com.course.criptomonedas.data.models.OrderBook
+import com.course.criptomonedas.data.models.ResponseBooks
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

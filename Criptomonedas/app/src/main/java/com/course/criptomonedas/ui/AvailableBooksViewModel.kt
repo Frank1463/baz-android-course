@@ -14,7 +14,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,7 +28,7 @@ class AvailableBooksViewModel @Inject constructor(
     private val _available_books = MutableLiveData<List<BooksEntity>>()
     val availableBooks = _available_books
 
-    fun getAvailableBooks() = viewModelScope.launch(Dispatchers.IO) {
+    fun getAvailableBooks() = viewModelScope.launch(IO) {
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
             useCaseGetAvailableBooksCase().observeOn(AndroidSchedulers.mainThread())
