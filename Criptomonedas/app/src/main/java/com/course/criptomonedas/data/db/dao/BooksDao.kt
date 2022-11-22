@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.course.criptomonedas.data.db.model.BooksEntity
 
-
 @Dao
 interface BooksDao {
 

@@ -1,12 +1,13 @@
 package com.course.criptomonedas.data.repository
 
 import com.course.criptomonedas.data.datasource.availablebooks.RemoteDataSource
-import com.course.criptomonedas.data.models.AvailableBooks
+import com.course.criptomonedas.data.models.ResponseBooks
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class AvailableBooksRepositoryImpl @Inject constructor(
     private val dataSource: RemoteDataSource
 ) : AvailableBooksRepository {
 
-    override suspend fun getAvailableBooks(): AvailableBooks = dataSource.getAvailableBooks()
+    override fun getAvailableBooks(): Single<ResponseBooks> = dataSource.getAvailableBooks()
 }

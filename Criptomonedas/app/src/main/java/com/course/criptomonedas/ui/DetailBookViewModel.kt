@@ -26,7 +26,6 @@ class DetailBookViewModel(
     private val _order_asks = MutableLiveData<List<Ask>>()
     val orderAsks = _order_asks
 
-
     fun getAvailableBooks(id: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val result = useCaseGetDetailsBooksCase(id)
@@ -59,5 +58,3 @@ class DetailViewModelFactory(
         ).newInstance(useCaseGetAvailableBooksCase, useCaseGetOrderBookCase)
     }
 }
-
-

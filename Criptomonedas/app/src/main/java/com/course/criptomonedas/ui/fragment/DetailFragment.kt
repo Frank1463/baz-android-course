@@ -37,7 +37,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                         service
                     )
                 )
-            ), GetOrderBookCase(
+            ),
+            GetOrderBookCase(
                 OrderBookRepositoryImpl(
                     RemoteDataSourceImpl(
                         service
@@ -55,7 +56,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         val book = args.book
         viewModel.getAvailableBooks(book)
         viewModel.getOrderBooks(book)
-        binding.detalle.text = book
+        binding.nameBook.text = book
         context?.resources?.getIdentifier(
             book,
             "drawable",
@@ -77,7 +78,6 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         viewModel.orderAsks.observe(viewLifecycleOwner) {
             adapterAsks.submitList(it)
         }
-
     }
 
     private fun configAdapterBids() {

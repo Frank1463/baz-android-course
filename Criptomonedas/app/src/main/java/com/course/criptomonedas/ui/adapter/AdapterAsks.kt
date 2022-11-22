@@ -10,14 +10,13 @@ import com.course.criptomonedas.R
 import com.course.criptomonedas.data.models.Ask
 import com.course.criptomonedas.databinding.ItemOrderBinding
 
-class AdapterOrderAsk(
-) : ListAdapter<Ask, AdapterOrderAsk.ViewHolder>(DiffUtilCallbackAsk) {
+class AdapterOrderAsk() : ListAdapter<Ask, AdapterOrderAsk.ViewHolder>(DiffUtilCallbackAsk) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemOrderBinding.bind(view)
 
         fun bind(
-            item: Ask,
+            item: Ask
         ) = with(binding) {
             if (adapterPosition % 2 == 0) {
                 itemBook.setBackgroundResource(R.color.gray_cell)
